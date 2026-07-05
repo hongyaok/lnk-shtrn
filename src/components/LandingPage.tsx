@@ -102,7 +102,7 @@ export default function LandingPage() {
 
     const expiry = durationMs === 0 ? 0 : Date.now() + durationMs;
     const encoded = encodeLinkPayload({ url: targetUrl, expiry });
-    
+
     const generatedLink = `${window.location.origin}/#${encoded}`;
     setShortLink(generatedLink);
     setCopied(false);
@@ -119,8 +119,8 @@ export default function LandingPage() {
     <>
       <div ref={splineContainerRef} className="spline-container" style={{ background: '#0a0a0a' }}>
         <Suspense fallback={null}>
-          <Spline 
-            scene={SPLINE_SCENE_URL} 
+          <Spline
+            scene={SPLINE_SCENE_URL}
             onLoad={() => setSplineLoaded(true)}
             style={{
               opacity: splineLoaded ? 1 : 0,
@@ -137,13 +137,13 @@ export default function LandingPage() {
             <p>Serverless, privacy-first link shortener.</p>
           </div>
 
-          <form onSubmit={handleShorten} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <InputGroup 
-              isRequired 
-              label="Destination URL" 
+          <form onSubmit={handleShorten} style={{ display: 'flex', flexDirection: 'column', gap: '1.125rem' }}>
+            <InputGroup
+              isRequired
+              label="Destination URL"
               leadingAddon={<InputGroup.Prefix>https://</InputGroup.Prefix>}
             >
-              <InputBase 
+              <InputBase
                 id="url"
                 type="url"
                 placeholder="example.com"
@@ -161,31 +161,31 @@ export default function LandingPage() {
             <div className="form-group">
               <label htmlFor="duration">Active For</label>
               <div className="custom-dropdown" style={{ position: 'relative' }}>
-                <div 
-                  className="input-field" 
+                <div
+                  className="input-field"
                   style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', userSelect: 'none' }}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   <span>{selectedLabel}</span>
-                  <ChevronDown size={20} style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+                  <ChevronDown size={18} style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
                 </div>
                 {isDropdownOpen && (
-                  <div className="dropdown-menu" style={{ 
-                    position: 'absolute', 
-                    top: '100%', 
-                    left: 0, 
-                    right: 0, 
-                    marginTop: '0.5rem',
+                  <div className="dropdown-menu" style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    right: 0,
+                    marginTop: '0.375rem',
                     background: 'rgba(30, 30, 30, 0.4)',
                     backdropFilter: 'blur(16px)',
                     WebkitBackdropFilter: 'blur(16px)',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '12px',
+                    borderRadius: '8px',
                     overflow: 'hidden',
                     zIndex: 50
                   }}>
                     {durationOptions.map(option => (
-                      <div 
+                      <div
                         key={option.value}
                         className="dropdown-item"
                         onClick={() => {
@@ -196,12 +196,13 @@ export default function LandingPage() {
                           }
                         }}
                         style={{
-                          padding: '0.875rem 1rem',
+                          padding: '0.625rem 0.875rem',
                           cursor: 'pointer',
                           color: duration === option.value ? '#a5b4fc' : '#fff',
                           background: duration === option.value ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
                           transition: 'background 0.2s',
-                          userSelect: 'none'
+                          userSelect: 'none',
+                          fontSize: '0.85rem'
                         }}
                         onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'; }}
                         onMouseLeave={(e) => { e.currentTarget.style.background = duration === option.value ? 'rgba(255, 255, 255, 0.1)' : 'transparent'; }}
@@ -248,7 +249,7 @@ export default function LandingPage() {
               </div>
             )}
 
-            {shortLink && (
+            {/* {shortLink && (
               <div style={{ animation: 'fadeIn 0.3s ease-out' }}>
                 <InputGroup label="Shortened URL">
                   <InputBase
@@ -261,7 +262,7 @@ export default function LandingPage() {
                   />
                 </InputGroup>
               </div>
-            )}
+            )} */}
 
             {!shortLink ? (
               <Button

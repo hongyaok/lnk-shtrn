@@ -64,7 +64,7 @@ export default function RedirectPage() {
     if (splineLoaded && payload && !error) {
       const timer = setTimeout(() => {
         window.location.href = payload.url;
-      }, 4500); // Wait 6 seconds for animation
+      }, 3500); // Redirect after 2 seconds (animation speed is doubled)
 
       return () => clearTimeout(timer);
     }
@@ -90,7 +90,20 @@ export default function RedirectPage() {
         <Suspense fallback={null}>
           <Spline
             scene={SPLINE_SCENE_URL}
-            onLoad={() => setSplineLoaded(true)}
+            onLoad={(splineApp) => {
+              setSplineLoaded(true);
+              if (splineApp && (splineApp as any).clock) {
+                const clock = (splineApp as any).clock;
+                const originalGetDelta = clock.getDelta;
+                clock.getDelta = function (this: any) {
+                  return originalGetDelta.apply(this) * 2.5; // double speed
+                };
+                const originalGetElapsedTime = clock.getElapsedTime;
+                clock.getElapsedTime = function (this: any) {
+                  return originalGetElapsedTime.apply(this) * 2.5; // double speed
+                };
+              }
+            }}
             style={{
               position: 'absolute',
               top: 0,
@@ -107,7 +120,7 @@ export default function RedirectPage() {
 
       <div style={{
         position: 'absolute',
-        top: '2rem',
+        top: '15vh',
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 10,

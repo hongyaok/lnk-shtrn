@@ -31,24 +31,59 @@ export default function LandingPage() {
       e.preventDefault();
     };
 
+    // Only block mouse clicks and drags to avoid selection/camera rotation issues on desktop.
+    // Do not block touch/pointer down/up/move to ensure smooth mobile scrolling and touch reactions.
     const eventsToBlock = [
       'mousedown',
       'mouseup',
-      'click',
-      'pointerdown',
-      'pointerup',
-      'touchstart',
-      'touchend'
+      'click'
     ];
 
     eventsToBlock.forEach(event => {
       container.addEventListener(event, blockEvent, true);
     });
 
+    // Translate touch events to mouse/pointer move events globally.
+    // This allows the Spline background to follow the user's finger on mobile
+    // without blocking native scrolling (by using passive listeners).
+    const handleTouch = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        
+        // Dispatch mousemove
+        const mouseEvent = new MouseEvent('mousemove', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+          screenX: touch.screenX,
+          screenY: touch.screenY,
+          bubbles: true,
+          cancelable: true
+        });
+        window.dispatchEvent(mouseEvent);
+
+        // Dispatch pointermove
+        const pointerEvent = new PointerEvent('pointermove', {
+          clientX: touch.clientX,
+          clientY: touch.clientY,
+          screenX: touch.screenX,
+          screenY: touch.screenY,
+          bubbles: true,
+          cancelable: true,
+          pointerType: 'touch'
+        });
+        window.dispatchEvent(pointerEvent);
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouch, { passive: true });
+    window.addEventListener('touchmove', handleTouch, { passive: true });
+
     return () => {
       eventsToBlock.forEach(event => {
         container.removeEventListener(event, blockEvent, true);
       });
+      window.removeEventListener('touchstart', handleTouch);
+      window.removeEventListener('touchmove', handleTouch);
     };
   }, []);
 

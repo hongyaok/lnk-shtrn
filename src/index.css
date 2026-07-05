@@ -63,6 +63,19 @@ body {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   animation: fadeIn 0.6s ease-out;
+  pointer-events: none;
+}
+
+.glass-card input,
+.glass-card button,
+.glass-card select,
+.glass-card a,
+.glass-card [role="button"],
+.glass-card .custom-dropdown,
+.glass-card .dropdown-menu,
+.glass-card .dropdown-item,
+.glass-card .input-wrapper,
+.glass-card .btn-secondary {
   pointer-events: auto;
 }
 
@@ -531,4 +544,158 @@ body {
     transform: scale(2.2);
     opacity: 0;
   }
+}
+
+/* Button Component Styles */
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  border-radius: 8px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+/* Hover pop effect */
+.ui-button.hover-pop:not(:disabled) {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ui-button.hover-pop:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+.ui-button.hover-pop:not(:disabled):active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Disabled state */
+.ui-button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Variants */
+.ui-button-default {
+  background: #ffffff;
+  color: #0a0a0a;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.ui-button-default:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.ui-button-secondary {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+.ui-button-secondary:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.ui-button-destructive {
+  background: #ef4444;
+  border-color: #f87171;
+  color: #ffffff;
+}
+.ui-button-destructive:not(:disabled):hover {
+  background: #dc2626;
+}
+
+.ui-button-outline {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+.ui-button-outline:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.ui-button-ghost {
+  background: transparent;
+  color: #ffffff;
+}
+.ui-button-ghost:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ui-button-link {
+  background: transparent;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.ui-button-link:not(:disabled):hover {
+  color: var(--primary-hover);
+}
+
+/* Sizes */
+.ui-button-size-default {
+  height: 2.75rem;
+  padding: 0 1.25rem;
+}
+.ui-button-size-sm {
+  height: 2.25rem;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+}
+.ui-button-size-lg {
+  height: 3.25rem;
+  padding: 0 1.75rem;
+  font-size: 1rem;
+}
+.ui-button-size-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+}
+.ui-button-size-icon-sm {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+}
+.ui-button-size-icon-lg {
+  width: 3.25rem;
+  height: 3.25rem;
+  padding: 0;
+}
+
+/* Arrow animation */
+.ui-button-arrow {
+  margin-left: 0.5rem;
+  margin-right: -0.25rem;
+  width: 10px;
+  height: 10px;
+  overflow: visible;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.ui-button-arrow-line {
+  opacity: 0;
+  stroke-dasharray: 7;
+  stroke-dashoffset: 7;
+  transition: opacity 0.2s ease, stroke-dashoffset 0.2s ease;
+}
+.ui-button-arrow-head {
+  transition: transform 0.2s ease;
+}
+.ui-button:hover .ui-button-arrow-line {
+  opacity: 1;
+  stroke-dashoffset: 0;
+}
+.ui-button:hover .ui-button-arrow-head {
+  transform: translateX(3px);
 }

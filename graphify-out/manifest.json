@@ -1,0 +1,187 @@
+{
+  ".oxlintrc.json": {
+    "mtime": 1783255482.0908444,
+    "ast_hash": "029f4905006c1fffd96bc863e2d98d3e",
+    "semantic_hash": "029f4905006c1fffd96bc863e2d98d3e"
+  },
+  "package.json": {
+    "mtime": 1783255628.3486972,
+    "ast_hash": "d70ed3865e0a064477510097ba341698",
+    "semantic_hash": "d70ed3865e0a064477510097ba341698"
+  },
+  "src/App.tsx": {
+    "mtime": 1783268547.8577268,
+    "ast_hash": "447d1dc8f3d1f38ee83f4ecfb2274f68",
+    "semantic_hash": "447d1dc8f3d1f38ee83f4ecfb2274f68"
+  },
+  "src/components/ExpiredPage.tsx": {
+    "mtime": 1783267830.279952,
+    "ast_hash": "3709021befb99dac224f4f21e291dcc7",
+    "semantic_hash": "3709021befb99dac224f4f21e291dcc7"
+  },
+  "src/components/LandingPage.tsx": {
+    "mtime": 1783269001.3275506,
+    "ast_hash": "46df353b3a0d30bbc4802137ce0edf16",
+    "semantic_hash": "46df353b3a0d30bbc4802137ce0edf16"
+  },
+  "src/components/RedirectPage.tsx": {
+    "mtime": 1783267872.9843926,
+    "ast_hash": "1904a55478fb8fcb989191106d481f63",
+    "semantic_hash": "1904a55478fb8fcb989191106d481f63"
+  },
+  "src/components/StatusIndicator.tsx": {
+    "mtime": 1783267832.332578,
+    "ast_hash": "d71261de05a93526187c1c3574721cdb",
+    "semantic_hash": "d71261de05a93526187c1c3574721cdb"
+  },
+  "src/components/base/input/input-group.tsx": {
+    "mtime": 1783268982.2473247,
+    "ast_hash": "b846133ca3e928e0bc537b5cf8948355",
+    "semantic_hash": "b846133ca3e928e0bc537b5cf8948355"
+  },
+  "src/components/base/input/input.tsx": {
+    "mtime": 1783257920.454551,
+    "ast_hash": "4e5061b3f2f0f062885f44641ac79f62",
+    "semantic_hash": "4e5061b3f2f0f062885f44641ac79f62"
+  },
+  "src/components/ui/button.tsx": {
+    "mtime": 1783268977.266959,
+    "ast_hash": "54d3eee17d97e9c87c2992462a9bad82",
+    "semantic_hash": "54d3eee17d97e9c87c2992462a9bad82"
+  },
+  "src/main.tsx": {
+    "mtime": 1783255482.1831737,
+    "ast_hash": "787e5a07efeb2bf6209d5937195f2f68",
+    "semantic_hash": "787e5a07efeb2bf6209d5937195f2f68"
+  },
+  "src/utils/urlEncoder.test.ts": {
+    "mtime": 1783268209.202584,
+    "ast_hash": "7c693b10285011f3fcd40843ed5bdc4f",
+    "semantic_hash": "7c693b10285011f3fcd40843ed5bdc4f"
+  },
+  "src/utils/urlEncoder.ts": {
+    "mtime": 1783263829.6787102,
+    "ast_hash": "5f8908d349c4daa4f73e794989c43bd4",
+    "semantic_hash": "5f8908d349c4daa4f73e794989c43bd4"
+  },
+  "tsconfig.app.json": {
+    "mtime": 1783255482.1025584,
+    "ast_hash": "5f2dafd737dea8a4ddcbb10f5113ac5a",
+    "semantic_hash": "5f2dafd737dea8a4ddcbb10f5113ac5a"
+  },
+  "tsconfig.json": {
+    "mtime": 1783255482.1055577,
+    "ast_hash": "a3d39fa780ebff65444de257f291ce6c",
+    "semantic_hash": "a3d39fa780ebff65444de257f291ce6c"
+  },
+  "tsconfig.node.json": {
+    "mtime": 1783255482.106557,
+    "ast_hash": "f9cb81ddcea69ffdab672fc8c48dca66",
+    "semantic_hash": "f9cb81ddcea69ffdab672fc8c48dca66"
+  },
+  "vercel.json": {
+    "mtime": 1783255588.9122794,
+    "ast_hash": "61bd31a2b0ac08f10f13c932b32d6ca1",
+    "semantic_hash": "61bd31a2b0ac08f10f13c932b32d6ca1"
+  },
+  "vite.config.ts": {
+    "mtime": 1783255482.1776655,
+    "ast_hash": "88439104b3c207f17d33ef3160e3b080",
+    "semantic_hash": "88439104b3c207f17d33ef3160e3b080"
+  },
+  "README.md": {
+    "mtime": 1783268739.6733787,
+    "ast_hash": "31a201004d9b910624f05ee88a112919",
+    "semantic_hash": "31a201004d9b910624f05ee88a112919"
+  },
+  "docs/superpowers/plans/2026-07-06-favicon-spline-update.md": {
+    "mtime": 1783268156.9914918,
+    "ast_hash": "d7a72aae93e77818a59eb0ad701e433c",
+    "semantic_hash": "d7a72aae93e77818a59eb0ad701e433c"
+  },
+  "docs/superpowers/specs/2026-07-06-favicon-spline-update-design.md": {
+    "mtime": 1783268136.6214077,
+    "ast_hash": "404de035bdd95e145e2b0561fa342645",
+    "semantic_hash": "404de035bdd95e145e2b0561fa342645"
+  },
+  "font_files/ROUND 8-FOUR/Webfont/Web Font Kit/generator_config.txt": {
+    "mtime": 1783256385.4987156,
+    "ast_hash": "2b473038f83c13f883dd2f70c10b6271",
+    "semantic_hash": "2b473038f83c13f883dd2f70c10b6271"
+  },
+  "font_files/ROUND 8-FOUR/Webfont/Web Font Kit/round8-four-demo.html": {
+    "mtime": 1783256385.4952025,
+    "ast_hash": "facd1fb3484188bc43c4e742b9c59031",
+    "semantic_hash": "facd1fb3484188bc43c4e742b9c59031"
+  },
+  "font_files/__MACOSX/ROUND 8-FOUR/Webfont/Web Font Kit/._generator_config.txt": {
+    "mtime": 1783256385.593735,
+    "ast_hash": "158417dfe790909c346e9d3e25b887ad",
+    "semantic_hash": "158417dfe790909c346e9d3e25b887ad"
+  },
+  "font_files/__MACOSX/ROUND 8-FOUR/Webfont/Web Font Kit/._round8-four-demo.html": {
+    "mtime": 1783256385.5897295,
+    "ast_hash": "158417dfe790909c346e9d3e25b887ad",
+    "semantic_hash": "158417dfe790909c346e9d3e25b887ad"
+  },
+  "index.html": {
+    "mtime": 1783267849.5831144,
+    "ast_hash": "03d1aa901da295cbf60726792c0bb030",
+    "semantic_hash": "03d1aa901da295cbf60726792c0bb030"
+  },
+  "public/fonts/generator_config.txt": {
+    "mtime": 1783256385.4987156,
+    "ast_hash": "2b473038f83c13f883dd2f70c10b6271",
+    "semantic_hash": "2b473038f83c13f883dd2f70c10b6271"
+  },
+  "public/fonts/round8-four-demo.html": {
+    "mtime": 1783256385.4952025,
+    "ast_hash": "facd1fb3484188bc43c4e742b9c59031",
+    "semantic_hash": "facd1fb3484188bc43c4e742b9c59031"
+  },
+  "font_files/ROUND 8-FOUR/Desktop/ROUND 8_desktop license.pdf": {
+    "mtime": 1783256385.5529356,
+    "ast_hash": "bc764b514ad483e395073f4abae1a20e",
+    "semantic_hash": "bc764b514ad483e395073f4abae1a20e"
+  },
+  "font_files/ROUND 8-FOUR/Webfont/ROUND 8_webfont license.pdf": {
+    "mtime": 1783256385.4821901,
+    "ast_hash": "b2cbf2bb52b1f077bb739d420be81378",
+    "semantic_hash": "b2cbf2bb52b1f077bb739d420be81378"
+  },
+  "font_files/__MACOSX/ROUND 8-FOUR/Desktop/._ROUND 8_desktop license.pdf": {
+    "mtime": 1783256385.644132,
+    "ast_hash": "8323739c166a9ce4ed003bd7a35bd379",
+    "semantic_hash": "8323739c166a9ce4ed003bd7a35bd379"
+  },
+  "font_files/__MACOSX/ROUND 8-FOUR/Webfont/._ROUND 8_webfont license.pdf": {
+    "mtime": 1783256385.5769565,
+    "ast_hash": "8323739c166a9ce4ed003bd7a35bd379",
+    "semantic_hash": "8323739c166a9ce4ed003bd7a35bd379"
+  },
+  "public/favicon.svg": {
+    "mtime": 1783268189.0781393,
+    "ast_hash": "c94635ad31a78e27b6653e5ee673a413",
+    "semantic_hash": "c94635ad31a78e27b6653e5ee673a413"
+  },
+  "public/icons.svg": {
+    "mtime": 1783255482.1508262,
+    "ast_hash": "3b4fcfcf393eca4d264dca4a4663bc37",
+    "semantic_hash": "3b4fcfcf393eca4d264dca4a4663bc37"
+  },
+  "src/assets/hero.png": {
+    "mtime": 1783255482.1244226,
+    "ast_hash": "aead493361b27e7510691c5d7072dfc1",
+    "semantic_hash": "aead493361b27e7510691c5d7072dfc1"
+  },
+  "src/assets/react.svg": {
+    "mtime": 1783255482.15783,
+    "ast_hash": "f0402b67b6ce880f65666bb49e841696",
+    "semantic_hash": "f0402b67b6ce880f65666bb49e841696"
+  },
+  "src/assets/vite.svg": {
+    "mtime": 1783255482.1655777,
+    "ast_hash": "9960a24288958394ac50e57ff638b036",
+    "semantic_hash": "9960a24288958394ac50e57ff638b036"
+  }
+}

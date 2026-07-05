@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 export interface InputGroupProps {
   children: ReactNode;
   label?: string;
-  hint?: string;
+  hint?: ReactNode;
   isRequired?: boolean;
   leadingAddon?: ReactNode;
   trailingAddon?: ReactNode;

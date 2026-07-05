@@ -48,7 +48,7 @@ function App() {
   return (
     <>
       {renderPage()}
-      <StatusIndicator state="fixing" label="Testing" />
+      <StatusIndicator state="active" label="online (beta)" />
       <a 
         href="https://github.com/hongyaok/lnk-shtrn" 
         target="_blank" 

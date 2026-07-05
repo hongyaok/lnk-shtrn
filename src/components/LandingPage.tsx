@@ -1,8 +1,9 @@
-import React, { useState, lazy, Suspense } from 'react';
-import { ArrowRight, Copy, CheckCircle2, ChevronDown } from 'lucide-react';
+import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import { Copy, CheckCircle2, ChevronDown } from 'lucide-react';
 import { encodeLinkPayload } from '../utils/urlEncoder';
 import { InputBase } from './base/input/input';
 import { InputGroup } from './base/input/input-group';
+import { Button } from './ui/button';
 
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
@@ -12,22 +13,71 @@ const SPLINE_SCENE_URL = '/spline/landingv2.splinecode';
 export default function LandingPage() {
   const [url, setUrl] = useState('');
   const [duration, setDuration] = useState('3600000'); // Default 1 hour
+  const [customSeconds, setCustomSeconds] = useState('30');
+  const [customError, setCustomError] = useState('');
   const [shortLink, setShortLink] = useState('');
   const [copied, setCopied] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const splineContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = splineContainerRef.current;
+    if (!container) return;
+
+    const blockEvent = (e: Event) => {
+      e.stopPropagation();
+      e.preventDefault();
+    };
+
+    const eventsToBlock = [
+      'mousedown',
+      'mouseup',
+      'click',
+      'pointerdown',
+      'pointerup',
+      'touchstart',
+      'touchend'
+    ];
+
+    eventsToBlock.forEach(event => {
+      container.addEventListener(event, blockEvent, true);
+    });
+
+    return () => {
+      eventsToBlock.forEach(event => {
+        container.removeEventListener(event, blockEvent, true);
+      });
+    };
+  }, []);
+
   const durationOptions = [
-    { value: '300000', label: '5 Minutes' },
     { value: '600000', label: '10 Minutes' },
     { value: '3600000', label: '1 Hour' },
     { value: '86400000', label: '1 Day' },
     { value: '604800000', label: '1 Week' },
     { value: '2592000000', label: '1 Month' },
-    { value: '31536000000', label: '1 Year' },
-    { value: '0', label: 'Forever' }
+    { value: '0', label: 'Forever' },
+    { value: 'custom', label: 'Custom Time...' }
   ];
+
   const selectedDuration = durationOptions.find(o => o.value === duration);
+  const selectedLabel = duration === 'custom'
+    ? `Custom (${customSeconds}s)`
+    : (selectedDuration?.label || 'Select Duration');
+
+  const handleCustomSecondsChange = (val: string) => {
+    setCustomSeconds(val);
+    const num = parseInt(val, 10);
+    if (!val) {
+      setCustomError('Duration is required');
+    } else if (isNaN(num) || num < 30 || num > 99999) {
+      setCustomError('Must be between 30 and 99999 seconds');
+    } else {
+      setCustomError('');
+    }
+  };
 
   const handleShorten = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +88,18 @@ export default function LandingPage() {
       targetUrl = 'https://' + targetUrl;
     }
 
-    const durationMs = parseInt(duration, 10);
+    let durationMs = 0;
+    if (duration === 'custom') {
+      const num = parseInt(customSeconds, 10);
+      if (isNaN(num) || num < 30 || num > 99999) {
+        setCustomError('Must be between 30 and 99999 seconds');
+        return;
+      }
+      durationMs = num * 1000;
+    } else {
+      durationMs = parseInt(duration, 10);
+    }
+
     const expiry = durationMs === 0 ? 0 : Date.now() + durationMs;
     const encoded = encodeLinkPayload({ url: targetUrl, expiry });
     
@@ -48,16 +109,15 @@ export default function LandingPage() {
   };
 
   const copyToClipboard = () => {
+    if (!shortLink) return;
     navigator.clipboard.writeText(shortLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-
-
   return (
     <>
-      <div className="spline-container" style={{ background: '#0a0a0a' }}>
+      <div ref={splineContainerRef} className="spline-container" style={{ background: '#0a0a0a' }}>
         <Suspense fallback={null}>
           <Spline 
             scene={SPLINE_SCENE_URL} 
@@ -88,7 +148,12 @@ export default function LandingPage() {
                 type="url"
                 placeholder="example.com"
                 value={url}
-                onChange={(e) => setUrl(e.target.value)}
+                onChange={(e) => {
+                  setUrl(e.target.value);
+                  if (shortLink) {
+                    setShortLink('');
+                  }
+                }}
                 required
               />
             </InputGroup>
@@ -101,7 +166,7 @@ export default function LandingPage() {
                   style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', userSelect: 'none' }}
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
-                  <span>{selectedDuration?.label}</span>
+                  <span>{selectedLabel}</span>
                   <ChevronDown size={20} style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
                 </div>
                 {isDropdownOpen && (
@@ -126,6 +191,9 @@ export default function LandingPage() {
                         onClick={() => {
                           setDuration(option.value);
                           setIsDropdownOpen(false);
+                          if (shortLink) {
+                            setShortLink('');
+                          }
                         }}
                         style={{
                           padding: '0.875rem 1rem',
@@ -146,36 +214,84 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary">
-              Shorten Link
-              <ArrowRight size={20} className="arrow-icon" />
-            </button>
-          </form>
+            {duration === 'custom' && (
+              <div style={{ animation: 'fadeIn 0.3s ease-out' }}>
+                <InputGroup
+                  isRequired
+                  label="Custom Duration"
+                  hint={
+                    customError ? (
+                      <span style={{ color: '#ef4444' }}>{customError}</span>
+                    ) : (
+                      'Enter duration in seconds (30s - 99999s)'
+                    )
+                  }
+                  trailingAddon={<InputGroup.Suffix>seconds</InputGroup.Suffix>}
+                >
+                  <InputBase
+                    id="custom-duration"
+                    type="number"
+                    min="30"
+                    max="99999"
+                    placeholder="30 - 99999"
+                    value={customSeconds}
+                    onChange={(e) => {
+                      handleCustomSecondsChange(e.target.value);
+                      if (shortLink) {
+                        setShortLink('');
+                      }
+                    }}
+                    required
+                    style={{ borderColor: customError ? '#ef4444' : undefined }}
+                  />
+                </InputGroup>
+              </div>
+            )}
 
-          {shortLink && (
-            <div className="result-card" style={{ padding: '0', background: 'transparent', border: 'none' }}>
-              <button 
-                type="button" 
-                onClick={copyToClipboard} 
-                className="btn-secondary" 
-                style={{ 
-                  width: '100%', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  gap: '8px', 
-                  padding: '1rem',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  borderColor: 'rgba(255, 255, 255, 0.3)'
+            {shortLink && (
+              <div style={{ animation: 'fadeIn 0.3s ease-out' }}>
+                <InputGroup label="Shortened URL">
+                  <InputBase
+                    id="short-url"
+                    type="text"
+                    value={shortLink}
+                    readOnly
+                    onClick={(e) => (e.target as HTMLInputElement).select()}
+                    style={{ color: '#a5b4fc', cursor: 'pointer' }}
+                  />
+                </InputGroup>
+              </div>
+            )}
+
+            {!shortLink ? (
+              <Button
+                type="submit"
+                variant="default"
+                size="lg"
+                withArrow
+                disabled={duration === 'custom' && !!customError}
+                style={{ width: '100%' }}
+              >
+                Shorten Link
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="secondary"
+                size="lg"
+                onClick={copyToClipboard}
+                style={{
+                  width: '100%',
+                  background: copied ? '#22c55e' : undefined,
+                  color: copied ? '#ffffff' : undefined,
+                  borderColor: copied ? '#22c55e' : undefined
                 }}
               >
                 {copied ? <CheckCircle2 size={20} /> : <Copy size={20} />}
                 {copied ? 'Link Copied!' : 'Copy Link'}
-              </button>
-            </div>
-          )}
+              </Button>
+            )}
+          </form>
         </div>
       </div>
     </>

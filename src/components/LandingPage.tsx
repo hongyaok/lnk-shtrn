@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
-import { Copy, CheckCircle2, ChevronDown, X, QrCode, Download, Link } from 'lucide-react';
+import { CheckCircle2, ChevronDown, X, QrCode, Download, Link } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { encodeLinkPayload } from '../utils/urlEncoder';
 import { InputBase } from './base/input/input';
@@ -53,7 +53,7 @@ export default function LandingPage() {
     const handleTouch = (e: TouchEvent) => {
       if (e.touches.length > 0) {
         const touch = e.touches[0];
-        
+
         // Dispatch mousemove
         const mouseEvent = new MouseEvent('mousemove', {
           clientX: touch.clientX,
@@ -157,12 +157,12 @@ export default function LandingPage() {
         return;
       }
       const num = parseInt(customValue, 10);
-      
+
       let multiplier = 1000; // seconds
       if (customUnit === 'minutes') multiplier = 60 * 1000;
       else if (customUnit === 'days') multiplier = 24 * 60 * 60 * 1000;
       else if (customUnit === 'months') multiplier = 30 * 24 * 60 * 60 * 1000;
-      
+
       durationMs = num * multiplier;
     } else {
       durationMs = parseInt(duration, 10);
@@ -230,7 +230,7 @@ export default function LandingPage() {
       <div className="content-wrapper">
         <div className="glass-card">
           <div className="header">
-            <h1>lnk-shrtn</h1>
+            <h1>lnk-shtrn</h1>
             <p>Serverless, privacy-first link shortener.</p>
           </div>
 
@@ -398,7 +398,7 @@ export default function LandingPage() {
 
       {showModal && (
         <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
           background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100
         }}>
@@ -407,12 +407,12 @@ export default function LandingPage() {
             borderRadius: '1rem', padding: '2rem', display: 'flex', flexDirection: 'column',
             alignItems: 'center', gap: '1.5rem', position: 'relative', width: '90%', maxWidth: '400px'
           }}>
-            <button 
+            <button
               type="button"
               onClick={() => setShowModal(false)}
               style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.7, transition: 'opacity 0.2s' }}
-              onMouseEnter={(e) => e.currentTarget.style.opacity='1'}
-              onMouseLeave={(e) => e.currentTarget.style.opacity='0.7'}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = '0.7'}
             >
               <X size={24} />
             </button>
@@ -443,8 +443,8 @@ export default function LandingPage() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   opacity: 0.8, transition: 'opacity 0.2s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.opacity='1'}
-                onMouseLeave={(e) => e.currentTarget.style.opacity='0.8'}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
                 title="Download QR Code"
               >
                 <Download size={16} />

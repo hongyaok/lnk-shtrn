@@ -126,7 +126,7 @@ export default function RedirectPage() {
         zIndex: 10,
         pointerEvents: 'none'
       }}>
-        <h1 className="redirect-title">lnk-shrtn</h1>
+        <h1 className="redirect-title">lnk-shtrn</h1>
       </div>
 
       <div style={{

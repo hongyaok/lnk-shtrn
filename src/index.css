@@ -710,3 +710,28 @@ body {
 .ui-button:hover .ui-button-arrow-head {
   transform: translateX(3px);
 }
+
+/* History Item styling */
+.history-item {
+  transition: all 0.2s ease;
+}
+
+.history-item:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Custom scrollbar for history container */
+.history-container::-webkit-scrollbar {
+  width: 4px;
+}
+.history-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.history-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+.history-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

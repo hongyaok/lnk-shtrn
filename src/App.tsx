@@ -2,16 +2,23 @@ import { useEffect, useState } from 'react';
 import LandingPage from './components/LandingPage';
 import RedirectPage from './components/RedirectPage';
 import ExpiredPage from './components/ExpiredPage';
+import MyLinksPage from './components/MyLinksPage';
 import StatusIndicator from './components/StatusIndicator';
 import { decodeLinkPayload } from './utils/urlEncoder';
 
-type Page = 'landing' | 'redirect' | 'expired';
+type Page = 'landing' | 'redirect' | 'expired' | 'my-links';
 
 function App() {
   const [page, setPage] = useState<Page>('landing');
 
   useEffect(() => {
-    const handleHashChange = () => {
+    const handleNavigation = () => {
+      const path = window.location.pathname;
+      if (path === '/my-links') {
+        setPage('my-links');
+        return;
+      }
+
       const hash = window.location.hash.replace(/^#/, '');
       if (hash.length === 0) {
         setPage('landing');
@@ -28,10 +35,14 @@ function App() {
     };
 
     // Initial check
-    handleHashChange();
+    handleNavigation();
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleNavigation);
+    window.addEventListener('popstate', handleNavigation);
+    return () => {
+      window.removeEventListener('hashchange', handleNavigation);
+      window.removeEventListener('popstate', handleNavigation);
+    };
   }, []);
 
   const renderPage = () => {
@@ -40,35 +51,77 @@ function App() {
         return <ExpiredPage />;
       case 'redirect':
         return <RedirectPage />;
+      case 'my-links':
+        return <MyLinksPage />;
       default:
         return <LandingPage />;
     }
+  };
+
+  const handleMyLinksClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.history.pushState({}, '', '/my-links');
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
   return (
     <>
       {renderPage()}
       <StatusIndicator state="active" label="online (beta)" />
-      <a 
-        href="https://github.com/hongyaok/lnk-shtrn" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="github-link"
-        title="View on GitHub"
-      >
-        <svg 
-          viewBox="0 0 24 24" 
-          width="20" 
-          height="20" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          fill="none" 
-          strokeLinecap="round" 
-          strokeLinejoin="round"
+      
+      <div style={{
+        position: 'fixed',
+        bottom: '1.25rem',
+        right: '1.25rem',
+        zIndex: 9999,
+        display: 'flex',
+        gap: '0.75rem'
+      }}>
+        {page !== 'my-links' && (
+          <button
+            onClick={handleMyLinksClick}
+            className="github-link"
+            title="My Links"
+            style={{ position: 'static' }}
+          >
+            <svg 
+              viewBox="0 0 24 24" 
+              width="20" 
+              height="20" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              fill="none" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+              <path d="M12 7v5l4 2" />
+            </svg>
+          </button>
+        )}
+        <a 
+          href="https://github.com/hongyaok/lnk-shtrn" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="github-link"
+          title="View on GitHub"
+          style={{ position: 'static' }}
         >
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-        </svg>
-      </a>
+          <svg 
+            viewBox="0 0 24 24" 
+            width="20" 
+            height="20" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            fill="none" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+        </a>
+      </div>
     </>
   );
 }

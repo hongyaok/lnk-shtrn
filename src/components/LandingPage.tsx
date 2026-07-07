@@ -144,7 +144,7 @@ export default function LandingPage() {
     e.preventDefault();
     if (!url) return;
 
-    let targetUrl = url;
+    let targetUrl = url.trim();
     if (!/^https?:\/\//i.test(targetUrl)) {
       targetUrl = 'https://' + targetUrl;
     }
@@ -242,7 +242,7 @@ export default function LandingPage() {
             >
               <InputBase
                 id="url"
-                type="url"
+                type="text"
                 placeholder="example.com"
                 value={url}
                 onChange={(e) => {
@@ -424,14 +424,6 @@ export default function LandingPage() {
                 id="qr-canvas-modal"
                 value={shortLink}
                 size={200}
-                imageSettings={{
-                  src: '/favicon.svg',
-                  x: undefined,
-                  y: undefined,
-                  height: 40,
-                  width: 40,
-                  excavate: true,
-                }}
               />
               <button
                 type="button"

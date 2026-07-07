@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
-import { Copy, CheckCircle2, ChevronDown } from 'lucide-react';
+import { Copy, CheckCircle2, ChevronDown, X, QrCode, Download, Link } from 'lucide-react';
+import { QRCodeCanvas } from 'qrcode.react';
 import { encodeLinkPayload } from '../utils/urlEncoder';
 import { InputBase } from './base/input/input';
 import { InputGroup } from './base/input/input-group';
@@ -13,10 +14,13 @@ const SPLINE_SCENE_URL = '/spline/landingv2.splinecode';
 export default function LandingPage() {
   const [url, setUrl] = useState('');
   const [duration, setDuration] = useState('3600000'); // Default 1 hour
-  const [customSeconds, setCustomSeconds] = useState('30');
+  const [customValue, setCustomValue] = useState('30');
+  const [customUnit, setCustomUnit] = useState('minutes');
   const [customError, setCustomError] = useState('');
   const [shortLink, setShortLink] = useState('');
   const [copied, setCopied] = useState(false);
+  const [qrCopied, setQrCopied] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -99,19 +103,41 @@ export default function LandingPage() {
 
   const selectedDuration = durationOptions.find(o => o.value === duration);
   const selectedLabel = duration === 'custom'
-    ? `Custom (${customSeconds}s)`
+    ? `Custom (${customValue} ${customUnit})`
     : (selectedDuration?.label || 'Select Duration');
 
-  const handleCustomSecondsChange = (val: string) => {
-    setCustomSeconds(val);
+  const validateCustomDuration = (val: string, unit: string) => {
     const num = parseInt(val, 10);
     if (!val) {
-      setCustomError('Duration is required');
-    } else if (isNaN(num) || num < 30 || num > 99999) {
-      setCustomError('Must be between 30 and 99999 seconds');
-    } else {
-      setCustomError('');
+      return 'Duration is required';
     }
+    if (isNaN(num) || num <= 0) {
+      return 'Must be a positive number';
+    }
+    if (unit === 'seconds' && num < 30) {
+      return 'Minimum is 30 seconds';
+    }
+
+    let months = 0;
+    if (unit === 'seconds') months = num / (30 * 24 * 60 * 60);
+    else if (unit === 'minutes') months = num / (30 * 24 * 60);
+    else if (unit === 'days') months = num / 30;
+    else if (unit === 'months') months = num;
+
+    if (months > 999) {
+      return 'Maximum duration is 999 months';
+    }
+    return '';
+  };
+
+  const handleCustomValueChange = (val: string) => {
+    setCustomValue(val);
+    setCustomError(validateCustomDuration(val, customUnit));
+  };
+
+  const handleCustomUnitChange = (unit: string) => {
+    setCustomUnit(unit);
+    setCustomError(validateCustomDuration(customValue, unit));
   };
 
   const handleShorten = (e: React.FormEvent) => {
@@ -125,12 +151,19 @@ export default function LandingPage() {
 
     let durationMs = 0;
     if (duration === 'custom') {
-      const num = parseInt(customSeconds, 10);
-      if (isNaN(num) || num < 30 || num > 99999) {
-        setCustomError('Must be between 30 and 99999 seconds');
+      const error = validateCustomDuration(customValue, customUnit);
+      if (error) {
+        setCustomError(error);
         return;
       }
-      durationMs = num * 1000;
+      const num = parseInt(customValue, 10);
+      
+      let multiplier = 1000; // seconds
+      if (customUnit === 'minutes') multiplier = 60 * 1000;
+      else if (customUnit === 'days') multiplier = 24 * 60 * 60 * 1000;
+      else if (customUnit === 'months') multiplier = 30 * 24 * 60 * 60 * 1000;
+      
+      durationMs = num * multiplier;
     } else {
       durationMs = parseInt(duration, 10);
     }
@@ -141,6 +174,8 @@ export default function LandingPage() {
     const generatedLink = `${window.location.origin}/#${encoded}`;
     setShortLink(generatedLink);
     setCopied(false);
+    setQrCopied(false);
+    setShowModal(true);
   };
 
   const copyToClipboard = () => {
@@ -148,6 +183,33 @@ export default function LandingPage() {
     navigator.clipboard.writeText(shortLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const copyQRCode = async () => {
+    const canvas = document.getElementById('qr-canvas-modal') as HTMLCanvasElement;
+    if (!canvas) return;
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      try {
+        const item = new ClipboardItem({ 'image/png': blob });
+        await navigator.clipboard.write([item]);
+        setQrCopied(true);
+        setTimeout(() => setQrCopied(false), 2000);
+      } catch (err) {
+        console.error('Failed to copy QR code', err);
+      }
+    });
+  };
+
+  const downloadQR = () => {
+    const canvas = document.getElementById('qr-canvas-modal') as HTMLCanvasElement;
+    if (canvas) {
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.download = 'qrcode.png';
+      a.href = url;
+      a.click();
+    }
   };
 
   return (
@@ -211,11 +273,9 @@ export default function LandingPage() {
                     left: 0,
                     right: 0,
                     marginTop: '0.375rem',
-                    background: 'rgba(30, 30, 30, 0.4)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '8px',
+                    background: 'rgba(30, 30, 30, 0.95)',
+                    border: '2px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '0',
                     overflow: 'hidden',
                     zIndex: 50
                   }}>
@@ -259,20 +319,43 @@ export default function LandingPage() {
                     customError ? (
                       <span style={{ color: '#ef4444' }}>{customError}</span>
                     ) : (
-                      'Enter duration in seconds (30s - 99999s)'
+                      `Enter duration in ${customUnit} (max 999 months)`
                     )
                   }
-                  trailingAddon={<InputGroup.Suffix>seconds</InputGroup.Suffix>}
+                  trailingAddon={
+                    <InputGroup.Suffix>
+                      <select
+                        value={customUnit}
+                        onChange={(e) => {
+                          handleCustomUnitChange(e.target.value);
+                          if (shortLink) setShortLink('');
+                        }}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          color: 'inherit',
+                          outline: 'none',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit',
+                          fontSize: 'inherit'
+                        }}
+                      >
+                        <option value="seconds" style={{ color: '#0a0a0a' }}>seconds</option>
+                        <option value="minutes" style={{ color: '#0a0a0a' }}>minutes</option>
+                        <option value="days" style={{ color: '#0a0a0a' }}>days</option>
+                        <option value="months" style={{ color: '#0a0a0a' }}>months</option>
+                      </select>
+                    </InputGroup.Suffix>
+                  }
                 >
                   <InputBase
                     id="custom-duration"
                     type="number"
-                    min="30"
-                    max="99999"
-                    placeholder="30 - 99999"
-                    value={customSeconds}
+                    min={customUnit === 'seconds' ? "30" : "1"}
+                    placeholder={`e.g. 30`}
+                    value={customValue}
                     onChange={(e) => {
-                      handleCustomSecondsChange(e.target.value);
+                      handleCustomValueChange(e.target.value);
                       if (shortLink) {
                         setShortLink('');
                       }
@@ -299,37 +382,106 @@ export default function LandingPage() {
               </div>
             )} */}
 
-            {!shortLink ? (
-              <Button
-                type="submit"
-                variant="default"
-                size="lg"
-                withArrow
-                disabled={duration === 'custom' && !!customError}
-                style={{ width: '100%' }}
+            <Button
+              type="submit"
+              variant="default"
+              size="lg"
+              withArrow
+              disabled={duration === 'custom' && !!customError}
+              style={{ width: '100%' }}
+            >
+              Shorten Link
+            </Button>
+          </form>
+        </div>
+      </div>
+
+      {showModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+          background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100
+        }}>
+          <div style={{
+            background: 'rgba(30,30,30,0.95)', border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: '1rem', padding: '2rem', display: 'flex', flexDirection: 'column',
+            alignItems: 'center', gap: '1.5rem', position: 'relative', width: '90%', maxWidth: '400px'
+          }}>
+            <button 
+              type="button"
+              onClick={() => setShowModal(false)}
+              style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.7, transition: 'opacity 0.2s' }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity='1'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity='0.7'}
+            >
+              <X size={24} />
+            </button>
+
+            <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>Your Link is Ready</h2>
+
+            <div style={{ position: 'relative', padding: '1rem', background: '#fff', borderRadius: '0.5rem' }}>
+              <QRCodeCanvas
+                id="qr-canvas-modal"
+                value={shortLink}
+                size={200}
+                imageSettings={{
+                  src: '/favicon.svg',
+                  x: undefined,
+                  y: undefined,
+                  height: 40,
+                  width: 40,
+                  excavate: true,
+                }}
+              />
+              <button
+                type="button"
+                onClick={downloadQR}
+                style={{
+                  position: 'absolute', top: '0.5rem', right: '0.5rem',
+                  background: 'rgba(0,0,0,0.6)', border: 'none', color: '#fff',
+                  borderRadius: '0.25rem', padding: '0.25rem', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  opacity: 0.8, transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity='1'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity='0.8'}
+                title="Download QR Code"
               >
-                Shorten Link
-              </Button>
-            ) : (
+                <Download size={16} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>
               <Button
                 type="button"
                 variant="secondary"
-                size="lg"
                 onClick={copyToClipboard}
                 style={{
-                  width: '100%',
+                  flex: 1,
                   background: copied ? '#22c55e' : undefined,
                   color: copied ? '#ffffff' : undefined,
                   borderColor: copied ? '#22c55e' : undefined
                 }}
               >
-                {copied ? <CheckCircle2 size={20} /> : <Copy size={20} />}
-                {copied ? 'Link Copied!' : 'Copy Link'}
+                {copied ? <CheckCircle2 size={18} /> : <Link size={18} />}
               </Button>
-            )}
-          </form>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={copyQRCode}
+                style={{
+                  flex: 1,
+                  background: qrCopied ? '#22c55e' : undefined,
+                  color: qrCopied ? '#ffffff' : undefined,
+                  borderColor: qrCopied ? '#22c55e' : undefined
+                }}
+              >
+                {qrCopied ? <CheckCircle2 size={18} /> : <QrCode size={18} />}
+              </Button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

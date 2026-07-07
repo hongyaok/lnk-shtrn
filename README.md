@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="./public/favicon.svg" alt="lnk-shrtn logo" height="64" />
-
-# lnk-shrtn
+# <img src="./public/favicon.svg" alt="lnk-shtrn logo" height="64" /> lnk-shtrn
 
 A serverless, privacy-first, database-free link shortener built with React, TypeScript, Vite, and interactive 3D Spline visuals.
 
@@ -27,7 +25,7 @@ A serverless, privacy-first, database-free link shortener built with React, Type
 
 ## Overview
 
-**lnk-shrtn** is a serverless, database-free URL shortener designed to protect user privacy. By compressing destination URLs and expiration conditions directly into the browser URL's hash fragment (`#`), the application enables link shortening and redirection without storing any mapping records in a database or logs on the hosting server.
+**lnk-shtrn** is a serverless, database-free URL shortener designed to protect user privacy. By compressing destination URLs and expiration conditions directly into the browser URL's hash fragment (`#`), the application enables link shortening and redirection without storing any mapping records in a database or logs on the hosting server.
 
 > [!IMPORTANT]
 > Because the compressed payload is stored in the URL's hash fragment (`#`), it is never transmitted to the web server. All URL decompression and redirection logic occur purely client-side within the browser.
@@ -39,7 +37,7 @@ A serverless, privacy-first, database-free link shortener built with React, Type
 The short link generation and redirection process functions entirely client-side:
 
 1. **Generation:** The user enters a destination URL and chooses an optional expiration date. The application compresses this payload via a custom binary protocol and serializes it into a padding-free `base64url` string.
-2. **Short Link Creation:** The serialized string is appended to the app's base URL as a hash fragment (e.g., `https://lnk-shrtn.vercel.app/#<payload>`).
+2. **Short Link Creation:** The serialized string is appended to the app's base URL as a hash fragment (e.g., `https://lnk-shtrn.vercel.app/#<payload>`).
 3. **Redirection:** When a visitor navigates to the short link, the client-side React router retrieves the hash fragment from the window location, deserializes the payload, validates the expiry timestamp, and performs a browser-level redirection if the link is still valid.
 
 ---

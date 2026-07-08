@@ -21,6 +21,7 @@ export default function MyLinksPage() {
   const [splineLoaded, setSplineLoaded] = useState(false);
   const [activeShareLink, setActiveShareLink] = useState<string | null>(null);
   const [revealedLinks, setRevealedLinks] = useState<Record<string, boolean>>({});
+  const [isClearModalOpen, setIsClearModalOpen] = useState(false);
 
   const splineContainerRef = useRef<HTMLDivElement>(null);
 
@@ -106,10 +107,13 @@ export default function MyLinksPage() {
   }, []);
 
   const handleClearHistory = () => {
-    if (confirm('Are you sure you want to clear your link history?')) {
-      localStorage.removeItem('lnk_shrtn_history');
-      setLinks([]);
-    }
+    setIsClearModalOpen(true);
+  };
+
+  const confirmClearHistory = () => {
+    localStorage.removeItem('lnk_shrtn_history');
+    setLinks([]);
+    setIsClearModalOpen(false);
   };
 
   const handleGoHome = () => {
@@ -272,6 +276,40 @@ export default function MyLinksPage() {
         onClose={() => setActiveShareLink(null)}
         shortLink={activeShareLink || ''}
       />
+
+      {isClearModalOpen && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100
+        }}>
+          <div style={{
+            background: 'rgba(30,30,30,0.95)', border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: '0', padding: '2rem', display: 'flex', flexDirection: 'column',
+            alignItems: 'center', gap: '1.5rem', position: 'relative', width: '90%', maxWidth: '400px',
+            textAlign: 'center'
+          }}>
+            <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600, fontFamily: "'Pixelify Sans', sans-serif" }}>Clear History?</h2>
+            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>Are you sure you want to clear your link history? This cannot be undone.</p>
+            <div style={{ display: 'flex', gap: '1rem', width: '100%', marginTop: '0.5rem' }}>
+              <Button
+                variant="secondary"
+                onClick={() => setIsClearModalOpen(false)}
+                style={{ flex: 1, borderRadius: 0 }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="outline"
+                onClick={confirmClearHistory}
+                style={{ flex: 1, borderRadius: 0, borderColor: '#ef4444', color: '#ef4444' }}
+              >
+                Clear
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

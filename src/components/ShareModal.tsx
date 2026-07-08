@@ -57,7 +57,7 @@ export default function ShareModal({ isOpen, onClose, shortLink }: ShareModalPro
     }}>
       <div style={{
         background: 'rgba(30,30,30,0.95)', border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: '1rem', padding: '2rem', display: 'flex', flexDirection: 'column',
+        borderRadius: '0', padding: '2rem', display: 'flex', flexDirection: 'column',
         alignItems: 'center', gap: '1.5rem', position: 'relative', width: '90%', maxWidth: '400px'
       }}>
         <button
@@ -72,7 +72,7 @@ export default function ShareModal({ isOpen, onClose, shortLink }: ShareModalPro
 
         <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600, fontFamily: "'Pixelify Sans', sans-serif" }}>Your Link is Ready</h2>
 
-        <div style={{ position: 'relative', padding: '1rem', background: '#fff', borderRadius: '0.5rem' }}>
+        <div style={{ position: 'relative', padding: '1rem', background: '#fff', borderRadius: '0' }}>
           <QRCodeCanvas
             id="qr-canvas-modal"
             value={shortLink}
@@ -84,7 +84,7 @@ export default function ShareModal({ isOpen, onClose, shortLink }: ShareModalPro
             style={{
               position: 'absolute', top: '0.5rem', right: '0.5rem',
               background: 'rgba(0,0,0,0.6)', border: 'none', color: '#fff',
-              borderRadius: '0.25rem', padding: '0.25rem', cursor: 'pointer',
+              borderRadius: '0', padding: '0.25rem', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               opacity: 0.8, transition: 'opacity 0.2s'
             }}
@@ -103,6 +103,7 @@ export default function ShareModal({ isOpen, onClose, shortLink }: ShareModalPro
             onClick={copyToClipboard}
             style={{
               flex: 1,
+              borderRadius: 0,
               background: copied ? '#22c55e' : undefined,
               color: copied ? '#ffffff' : undefined,
               borderColor: copied ? '#22c55e' : undefined
@@ -116,6 +117,7 @@ export default function ShareModal({ isOpen, onClose, shortLink }: ShareModalPro
             onClick={copyQRCode}
             style={{
               flex: 1,
+              borderRadius: 0,
               background: qrCopied ? '#22c55e' : undefined,
               color: qrCopied ? '#ffffff' : undefined,
               borderColor: qrCopied ? '#22c55e' : undefined

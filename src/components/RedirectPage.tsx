@@ -1,23 +1,28 @@
 import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { decodeLinkPayload, type LinkPayload } from '../utils/urlEncoder';
+import { Button } from './ui/button';
 
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
 // We use the remote production Spline URL
-const SPLINE_SCENE_URL = '/spline/loading.splinecode';
+const SPLINE_SCENE_URL = '/spline/redirect2.splinecode';
 
 const getDisplayLink = (url: string): string => {
   const protocolIndex = url.indexOf('://');
+  let firstSlashIndex = -1;
   if (protocolIndex !== -1) {
-    const firstSlashIndex = url.indexOf('/', protocolIndex + 3);
-    if (firstSlashIndex !== -1) {
-      return url.substring(0, firstSlashIndex);
-    }
+    firstSlashIndex = url.indexOf('/', protocolIndex + 3);
   } else {
-    const firstSlashIndex = url.indexOf('/');
-    if (firstSlashIndex !== -1) {
-      return url.substring(0, firstSlashIndex);
+    firstSlashIndex = url.indexOf('/');
+  }
+
+  if (firstSlashIndex !== -1) {
+    const mainPart = url.substring(0, firstSlashIndex);
+    const remainder = url.substring(firstSlashIndex + 1);
+    if (remainder.length > 0) {
+      return mainPart + '/...';
     }
+    return mainPart;
   }
   return url;
 };
@@ -156,9 +161,22 @@ export default function RedirectPage() {
 
       <div style={{
         position: 'absolute',
-        top: '50%',
+        top: '35vh',
         left: '50%',
-        transform: 'translate(-50%, -50%)',
+        transform: 'translateX(-50%)',
+        zIndex: 10,
+        pointerEvents: 'none',
+        textAlign: 'center',
+        width: '90%'
+      }}>
+        <h2 className="redirect-text" style={{ margin: 0 }}>Redirecting...</h2>
+      </div>
+
+      <div style={{
+        position: 'absolute',
+        top: '63vh',
+        left: '50%',
+        transform: 'translateX(-50%)',
         zIndex: 10,
         pointerEvents: 'none',
         display: 'flex',
@@ -169,19 +187,13 @@ export default function RedirectPage() {
         maxWidth: '400px',
         textAlign: 'center'
       }}>
-        <h2 className="redirect-text">Redirecting...</h2>
         {payload && (
           <div style={{
             pointerEvents: 'auto',
             fontSize: '1rem',
             color: '#a5b4fc',
             wordBreak: 'break-all',
-            fontFamily: 'monospace',
-            backgroundColor: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: '0.75rem 1rem',
-            borderRadius: '4px',
-            marginTop: '0.5rem',
+            fontFamily: "'Pixelify Sans', sans-serif",
             display: 'flex',
             flexDirection: 'column',
             gap: '0.25rem',
@@ -195,26 +207,19 @@ export default function RedirectPage() {
             </span>
           </div>
         )}
-        <button
+        <Button
           onClick={handleCancel}
-          className="btn-secondary"
+          variant="default"
+          size="lg"
           style={{
             pointerEvents: 'auto',
-            padding: '0.625rem 1.25rem',
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
-            border: '2px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: 0,
-            cursor: 'pointer',
             marginTop: '0.5rem',
-            transition: 'all 0.2s ease'
+            width: '100%',
+            maxWidth: '240px'
           }}
         >
           Cancel Redirect
-        </button>
+        </Button>
       </div>
     </div>
   );

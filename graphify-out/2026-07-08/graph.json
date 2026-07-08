@@ -1577,7 +1577,7 @@
       "_origin": "ast",
       "community": 12,
       "norm_label": "pixelspinner.tsx",
-      "community_name": "PixelSpinner.tsx",
+      "community_name": "AIPage.tsx",
       "id": "src_components_pixelspinner"
     },
     {
@@ -1588,7 +1588,7 @@
       "_origin": "ast",
       "community": 12,
       "norm_label": "pixelspinnerprops",
-      "community_name": "PixelSpinner.tsx",
+      "community_name": "AIPage.tsx",
       "id": "src_components_pixelspinner_pixelspinnerprops"
     },
     {
@@ -1599,7 +1599,7 @@
       "_origin": "ast",
       "community": 12,
       "norm_label": "pixelspinner()",
-      "community_name": "PixelSpinner.tsx",
+      "community_name": "AIPage.tsx",
       "id": "src_components_pixelspinner_pixelspinner"
     },
     {
@@ -1630,10 +1630,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L1",
       "_origin": "ast",
-      "community": 0,
-      "norm_label": "aipage.tsx",
       "id": "src_components_aipage",
-      "community_name": "App.tsx"
+      "community": 0,
+      "norm_label": "aipage.tsx"
     },
     {
       "label": "Spline",
@@ -1641,10 +1640,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L7",
       "_origin": "ast",
-      "community": 0,
-      "norm_label": "spline",
       "id": "src_components_aipage_spline",
-      "community_name": "App.tsx"
+      "community": 0,
+      "norm_label": "spline"
     },
     {
       "label": "Article",
@@ -1652,10 +1650,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L10",
       "_origin": "ast",
-      "community": 0,
-      "norm_label": "article",
       "id": "src_components_aipage_article",
-      "community_name": "App.tsx"
+      "community": 0,
+      "norm_label": "article"
     },
     {
       "label": "RankedArticle",
@@ -1663,10 +1660,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L17",
       "_origin": "ast",
-      "community": 0,
-      "norm_label": "rankedarticle",
       "id": "src_components_aipage_rankedarticle",
-      "community_name": "App.tsx"
+      "community": 0,
+      "norm_label": "rankedarticle"
     },
     {
       "label": "AIPage()",
@@ -1674,10 +1670,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L24",
       "_origin": "ast",
-      "community": 0,
-      "norm_label": "aipage()",
       "id": "src_components_aipage_aipage",
-      "community_name": "App.tsx"
+      "community": 0,
+      "norm_label": "aipage()"
     }
   ],
   "links": [
@@ -3077,9 +3072,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L24",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "src_components_aipage",
-      "target": "src_components_aipage_aipage"
+      "target": "src_components_aipage_aipage",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3087,9 +3082,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L10",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "src_components_aipage",
-      "target": "src_components_aipage_article"
+      "target": "src_components_aipage_article",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3097,9 +3092,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L17",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "src_components_aipage",
-      "target": "src_components_aipage_rankedarticle"
+      "target": "src_components_aipage_rankedarticle",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3107,9 +3102,9 @@
       "source_file": "src/components/AIPage.tsx",
       "source_location": "L7",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "src_components_aipage",
-      "target": "src_components_aipage_spline"
+      "target": "src_components_aipage_spline",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],

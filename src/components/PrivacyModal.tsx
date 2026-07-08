@@ -17,7 +17,7 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
       localStorage.removeItem('lnk_shrtn_history');
       localStorage.removeItem('ai_news_cache');
       localStorage.removeItem('ai_news_timestamp');
-      window.location.reload();
+      window.location.href = '/';
     }
   };
 
@@ -80,13 +80,13 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
             <strong style={{ color: '#fff' }}>How to clear your data:</strong>
             <ul style={{ margin: '0.25rem 0 0 0', paddingLeft: '1.25rem' }}>
               <li>Clear link history using the red <strong>Clear History</strong> button on the My Links page.</li>
-              <li>Or click the <strong>Clear Local Data</strong> button below to purge all link and news cache.</li>
+              {/* <li>Or click the <strong>Clear Local Data</strong> button below to purge all link and news cache.</li> */}
             </ul>
           </div>
         </div>
 
         <div style={{ display: 'flex', gap: '0.75rem', width: '100%', marginTop: '0.75rem' }}>
-          <Button
+          {/* <Button
             variant="outline"
             onClick={handleClearAllData}
             style={{
@@ -96,7 +96,7 @@ export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
             }}
           >
             Clear Local Data
-          </Button>
+          </Button> */}
           <Button
             variant="secondary"
             onClick={onClose}

@@ -1,0 +1,286 @@
+{
+  "communities": {
+    "0": [
+      "src_app",
+      "src_app_app",
+      "src_app_page",
+      "src_components_aipage",
+      "src_components_aipage_aipage",
+      "src_components_aipage_article",
+      "src_components_aipage_rankedarticle",
+      "src_components_aipage_spline",
+      "src_components_landingpage",
+      "src_components_landingpage_landingpage",
+      "src_components_landingpage_spline",
+      "src_components_mylinkspage",
+      "src_components_mylinkspage_mylinkspage",
+      "src_components_mylinkspage_savedlink",
+      "src_components_mylinkspage_spline",
+      "src_components_redirectpage",
+      "src_components_redirectpage_getdisplaylink",
+      "src_components_redirectpage_redirectpage",
+      "src_components_redirectpage_spline",
+      "src_components_sharemodal",
+      "src_components_sharemodal_sharemodal",
+      "src_components_sharemodal_sharemodalprops",
+      "src_main"
+    ],
+    "1": [
+      "tsconfig_app",
+      "tsconfig_app_compileroptions",
+      "tsconfig_app_compileroptions_allowarbitraryextensions",
+      "tsconfig_app_compileroptions_allowimportingtsextensions",
+      "tsconfig_app_compileroptions_erasablesyntaxonly",
+      "tsconfig_app_compileroptions_jsx",
+      "tsconfig_app_compileroptions_lib",
+      "tsconfig_app_compileroptions_module",
+      "tsconfig_app_compileroptions_moduledetection",
+      "tsconfig_app_compileroptions_moduleresolution",
+      "tsconfig_app_compileroptions_noemit",
+      "tsconfig_app_compileroptions_nofallthroughcasesinswitch",
+      "tsconfig_app_compileroptions_nounusedlocals",
+      "tsconfig_app_compileroptions_nounusedparameters",
+      "tsconfig_app_compileroptions_skiplibcheck",
+      "tsconfig_app_compileroptions_target",
+      "tsconfig_app_compileroptions_tsbuildinfofile",
+      "tsconfig_app_compileroptions_types",
+      "tsconfig_app_compileroptions_verbatimmodulesyntax",
+      "tsconfig_app_include"
+    ],
+    "2": [
+      "package",
+      "package_dependencies",
+      "package_dependencies_fflate",
+      "package_dependencies_lucide_react",
+      "package_dependencies_lz_string",
+      "package_dependencies_qrcode_react",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_dependencies_splinetool_react_spline",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_preview",
+      "package_type",
+      "package_version"
+    ],
+    "3": [
+      "tsconfig_node",
+      "tsconfig_node_compileroptions",
+      "tsconfig_node_compileroptions_allowimportingtsextensions",
+      "tsconfig_node_compileroptions_erasablesyntaxonly",
+      "tsconfig_node_compileroptions_lib",
+      "tsconfig_node_compileroptions_module",
+      "tsconfig_node_compileroptions_moduledetection",
+      "tsconfig_node_compileroptions_noemit",
+      "tsconfig_node_compileroptions_nofallthroughcasesinswitch",
+      "tsconfig_node_compileroptions_nounusedlocals",
+      "tsconfig_node_compileroptions_nounusedparameters",
+      "tsconfig_node_compileroptions_skiplibcheck",
+      "tsconfig_node_compileroptions_target",
+      "tsconfig_node_compileroptions_tsbuildinfofile",
+      "tsconfig_node_compileroptions_types",
+      "tsconfig_node_compileroptions_verbatimmodulesyntax",
+      "tsconfig_node_include"
+    ],
+    "4": [
+      "src_utils_urlencoder",
+      "src_utils_urlencoder_base_79",
+      "src_utils_urlencoder_decodebinarypayload",
+      "src_utils_urlencoder_decodelegacypayload",
+      "src_utils_urlencoder_decodelinkpayload",
+      "src_utils_urlencoder_decodev3binarypayload",
+      "src_utils_urlencoder_decodev3string",
+      "src_utils_urlencoder_dictionary",
+      "src_utils_urlencoder_encodelinkpayload",
+      "src_utils_urlencoder_encodev3string",
+      "src_utils_urlencoder_epoch_ms",
+      "src_utils_urlencoder_frombase64url",
+      "src_utils_urlencoder_frombase79",
+      "src_utils_urlencoder_linkpayload",
+      "src_utils_urlencoder_test",
+      "src_utils_urlencoder_tobase79"
+    ],
+    "5": [
+      "package_devdependencies",
+      "package_devdependencies_rss_parser",
+      "package_devdependencies_types_lz_string",
+      "package_devdependencies_types_node",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_typescript",
+      "package_devdependencies_vercel_node",
+      "package_devdependencies_vite",
+      "package_devdependencies_vitejs_plugin_react"
+    ],
+    "6": [
+      "oxlintrc",
+      "oxlintrc_plugins",
+      "oxlintrc_rules",
+      "oxlintrc_rules_react_only_export_components",
+      "oxlintrc_rules_react_rules_of_hooks",
+      "oxlintrc_schema"
+    ],
+    "7": [
+      "scripts_scrape_ai_news",
+      "scripts_scrape_ai_news_dirname",
+      "scripts_scrape_ai_news_feeds",
+      "scripts_scrape_ai_news_filename",
+      "scripts_scrape_ai_news_parser",
+      "scripts_scrape_ai_news_scrapenews"
+    ],
+    "8": [
+      "src_components_base_input_input_group",
+      "src_components_base_input_input_group_inputgroup",
+      "src_components_base_input_input_group_inputgroupprops",
+      "src_components_base_input_input_group_prefix",
+      "src_components_base_input_input_group_suffix"
+    ],
+    "9": [
+      "src_components_statusindicator",
+      "src_components_statusindicator_statusindicator",
+      "src_components_statusindicator_statusindicatorprops",
+      "src_components_statusindicator_statusstate"
+    ],
+    "10": [
+      "src_components_ui_button",
+      "src_components_ui_button_button",
+      "src_components_ui_button_buttonarrow",
+      "src_components_ui_button_buttonprops"
+    ],
+    "11": [
+      "src_components_base_input_input",
+      "src_components_base_input_input_inputbase",
+      "src_components_base_input_input_inputbaseprops"
+    ],
+    "12": [
+      "src_components_pixelspinner",
+      "src_components_pixelspinner_pixelspinner",
+      "src_components_pixelspinner_pixelspinnerprops"
+    ],
+    "13": [
+      "tsconfig",
+      "tsconfig_files",
+      "tsconfig_references"
+    ],
+    "14": [
+      "api_clear_cache",
+      "api_clear_cache_handler"
+    ],
+    "15": [
+      "api_news",
+      "api_news_handler"
+    ],
+    "16": [
+      "src_components_expiredpage",
+      "src_components_expiredpage_expiredpage"
+    ],
+    "17": [
+      "vercel",
+      "vercel_rewrites"
+    ],
+    "18": [
+      "public_favicon_svg"
+    ],
+    "19": [
+      "public_icons_svg"
+    ],
+    "20": [
+      "src_assets_hero_png"
+    ],
+    "21": [
+      "src_assets_react_svg"
+    ],
+    "22": [
+      "src_assets_vite_svg"
+    ],
+    "23": [
+      "vite_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.09486166007905138,
+    "1": 0.1,
+    "2": 0.11764705882352941,
+    "3": 0.11764705882352941,
+    "4": 0.21666666666666667,
+    "5": 0.2,
+    "6": 0.3333333333333333,
+    "7": 0.3333333333333333,
+    "8": 0.4,
+    "9": 0.5,
+    "10": 0.5,
+    "11": 0.6666666666666666,
+    "12": 0.6666666666666666,
+    "13": 0.6666666666666666,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0
+  },
+  "gods": [
+    {
+      "id": "tsconfig_app_compileroptions",
+      "label": "compilerOptions",
+      "degree": 18
+    },
+    {
+      "id": "tsconfig_node_compileroptions",
+      "label": "compilerOptions",
+      "degree": 15
+    },
+    {
+      "id": "src_utils_urlencoder_decodelinkpayload",
+      "label": "decodeLinkPayload()",
+      "degree": 5
+    },
+    {
+      "id": "src_utils_urlencoder_encodelinkpayload",
+      "label": "encodeLinkPayload()",
+      "degree": 4
+    },
+    {
+      "id": "src_utils_urlencoder_decodev3binarypayload",
+      "label": "decodeV3BinaryPayload()",
+      "degree": 4
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 4
+    },
+    {
+      "id": "oxlintrc_rules",
+      "label": "rules",
+      "degree": 3
+    },
+    {
+      "id": "src_utils_urlencoder_decodebinarypayload",
+      "label": "decodeBinaryPayload()",
+      "degree": 3
+    },
+    {
+      "id": "src_utils_urlencoder_linkpayload",
+      "label": "LinkPayload",
+      "degree": 2
+    },
+    {
+      "id": "src_utils_urlencoder_tobase79",
+      "label": "toBase79()",
+      "degree": 2
+    }
+  ],
+  "surprises": [],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}

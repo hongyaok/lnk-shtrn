@@ -125,7 +125,7 @@ function App() {
         gap: '0.75rem',
         alignItems: 'center'
       }}>
-        {(page === 'ai' || page === 'my-links') && (
+        {(page === 'landing' || page === 'ai' || page === 'my-links') && (
           <button
             onClick={() => setIsPrivacyModalOpen(true)}
             className="github-link"

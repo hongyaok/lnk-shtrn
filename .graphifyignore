@@ -1,0 +1,11 @@
+.agents
+.git
+.vercel
+node_modules
+dist
+recovered.tsx
+font_files
+public/fonts
+*.md
+*.html
+*.txt

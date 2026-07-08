@@ -1,8 +1,16 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/my-links",
       "destination": "/index.html"
+    },
+    {
+      "source": "/ai",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/clear-cache",
+      "destination": "/api/clear-cache"
     }
   ]
 }

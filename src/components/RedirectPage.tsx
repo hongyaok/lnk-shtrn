@@ -6,6 +6,22 @@ const Spline = lazy(() => import('@splinetool/react-spline'));
 // We use the remote production Spline URL
 const SPLINE_SCENE_URL = '/spline/loading.splinecode';
 
+const getDisplayLink = (url: string): string => {
+  const protocolIndex = url.indexOf('://');
+  if (protocolIndex !== -1) {
+    const firstSlashIndex = url.indexOf('/', protocolIndex + 3);
+    if (firstSlashIndex !== -1) {
+      return url.substring(0, firstSlashIndex);
+    }
+  } else {
+    const firstSlashIndex = url.indexOf('/');
+    if (firstSlashIndex !== -1) {
+      return url.substring(0, firstSlashIndex);
+    }
+  }
+  return url;
+};
+
 export default function RedirectPage() {
   const [error, setError] = useState<string | null>(null);
   const [payload, setPayload] = useState<LinkPayload | null>(null);
@@ -138,6 +154,29 @@ export default function RedirectPage() {
         pointerEvents: 'none'
       }}>
         <h2 className="redirect-text">Redirecting...</h2>
+        {payload && (
+          <div style={{
+            fontSize: '1rem',
+            color: '#a5b4fc',
+            wordBreak: 'break-all',
+            fontFamily: 'monospace',
+            backgroundColor: 'rgba(255, 255, 255, 0.05)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            padding: '0.75rem 1rem',
+            borderRadius: '4px',
+            marginTop: '1rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.25rem'
+          }}>
+            <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Destination
+            </span>
+            <span style={{ fontWeight: 600 }}>
+              {getDisplayLink(payload.url)}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

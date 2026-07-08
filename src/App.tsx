@@ -3,19 +3,27 @@ import LandingPage from './components/LandingPage';
 import RedirectPage from './components/RedirectPage';
 import ExpiredPage from './components/ExpiredPage';
 import MyLinksPage from './components/MyLinksPage';
+import AIPage from './components/AIPage';
 import StatusIndicator from './components/StatusIndicator';
 import { decodeLinkPayload } from './utils/urlEncoder';
+import { Bot, HelpCircle } from 'lucide-react';
+import PrivacyModal from './components/PrivacyModal';
 
-type Page = 'landing' | 'redirect' | 'expired' | 'my-links';
+type Page = 'landing' | 'redirect' | 'expired' | 'my-links' | 'ai';
 
 function App() {
   const [page, setPage] = useState<Page>('landing');
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
 
   useEffect(() => {
     const handleNavigation = () => {
       const path = window.location.pathname;
       if (path === '/my-links') {
         setPage('my-links');
+        return;
+      }
+      if (path === '/ai') {
+        setPage('ai');
         return;
       }
 
@@ -53,6 +61,8 @@ function App() {
         return <RedirectPage />;
       case 'my-links':
         return <MyLinksPage />;
+      case 'ai':
+        return <AIPage />;
       default:
         return <LandingPage />;
     }
@@ -64,10 +74,47 @@ function App() {
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
+  const handleAiClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.history.pushState({}, '', '/ai');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
+
   return (
     <>
       {renderPage()}
-      <StatusIndicator state="active" label="online (beta)" />
+      <div style={{
+        position: 'fixed',
+        bottom: '1.25rem',
+        left: '1.25rem',
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem'
+      }}>
+        <a 
+          href="https://github.com/hongyaok/lnk-shtrn" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="github-link"
+          title="View on GitHub"
+          style={{ position: 'static' }}
+        >
+          <svg 
+            viewBox="0 0 24 24" 
+            width="20" 
+            height="20" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            fill="none" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+        </a>
+        <StatusIndicator state="active" label="online (beta)" />
+      </div>
       
       <div style={{
         position: 'fixed',
@@ -75,8 +122,29 @@ function App() {
         right: '1.25rem',
         zIndex: 9999,
         display: 'flex',
-        gap: '0.75rem'
+        gap: '0.75rem',
+        alignItems: 'center'
       }}>
+        {(page === 'ai' || page === 'my-links') && (
+          <button
+            onClick={() => setIsPrivacyModalOpen(true)}
+            className="github-link"
+            title="Privacy & Data Info"
+            style={{ position: 'static' }}
+          >
+            <HelpCircle size={20} />
+          </button>
+        )}
+        {page !== 'ai' && (
+          <button
+            onClick={handleAiClick}
+            className="github-link"
+            title="AI Updates"
+            style={{ position: 'static' }}
+          >
+            <Bot size={20} />
+          </button>
+        )}
         {page !== 'my-links' && (
           <button
             onClick={handleMyLinksClick}
@@ -100,28 +168,12 @@ function App() {
             </svg>
           </button>
         )}
-        <a 
-          href="https://github.com/hongyaok/lnk-shtrn" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="github-link"
-          title="View on GitHub"
-          style={{ position: 'static' }}
-        >
-          <svg 
-            viewBox="0 0 24 24" 
-            width="20" 
-            height="20" 
-            stroke="currentColor" 
-            strokeWidth="2" 
-            fill="none" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
-          >
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-          </svg>
-        </a>
       </div>
+
+      <PrivacyModal 
+        isOpen={isPrivacyModalOpen} 
+        onClose={() => setIsPrivacyModalOpen(false)} 
+      />
     </>
   );
 }

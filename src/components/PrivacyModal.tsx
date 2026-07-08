@@ -9,18 +9,6 @@ interface PrivacyModalProps {
 export default function PrivacyModal({ isOpen, onClose }: PrivacyModalProps) {
   if (!isOpen) return null;
 
-  const handleClearAllData = () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to clear all local data? This will permanently delete your link history and AI cache on this device."
-    );
-    if (confirmed) {
-      localStorage.removeItem('lnk_shrtn_history');
-      localStorage.removeItem('ai_news_cache');
-      localStorage.removeItem('ai_news_timestamp');
-      window.location.href = '/';
-    }
-  };
-
   return (
     <div style={{
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,

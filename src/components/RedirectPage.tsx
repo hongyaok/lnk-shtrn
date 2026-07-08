@@ -26,8 +26,15 @@ export default function RedirectPage() {
   const [error, setError] = useState<string | null>(null);
   const [payload, setPayload] = useState<LinkPayload | null>(null);
   const [splineLoaded, setSplineLoaded] = useState(false);
+  const [cancelled, setCancelled] = useState(false);
 
   const splineContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleCancel = () => {
+    setCancelled(true);
+    window.history.pushState({}, '', '/');
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  };
 
   useEffect(() => {
     const container = splineContainerRef.current;
@@ -76,6 +83,8 @@ export default function RedirectPage() {
   }, []);
 
   useEffect(() => {
+    if (cancelled) return;
+
     // Only start the redirect timer once the Spline scene has loaded
     if (splineLoaded && payload && !error) {
       const timer = setTimeout(() => {
@@ -84,7 +93,7 @@ export default function RedirectPage() {
 
       return () => clearTimeout(timer);
     }
-  }, [splineLoaded, payload, error]);
+  }, [splineLoaded, payload, error, cancelled]);
 
   if (error) {
     return (
@@ -151,11 +160,19 @@ export default function RedirectPage() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         zIndex: 10,
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '1rem',
+        width: '90%',
+        maxWidth: '400px',
+        textAlign: 'center'
       }}>
         <h2 className="redirect-text">Redirecting...</h2>
         {payload && (
           <div style={{
+            pointerEvents: 'auto',
             fontSize: '1rem',
             color: '#a5b4fc',
             wordBreak: 'break-all',
@@ -164,10 +181,11 @@ export default function RedirectPage() {
             border: '1px solid rgba(255, 255, 255, 0.1)',
             padding: '0.75rem 1rem',
             borderRadius: '4px',
-            marginTop: '1rem',
+            marginTop: '0.5rem',
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.25rem'
+            gap: '0.25rem',
+            width: '100%'
           }}>
             <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Destination
@@ -177,6 +195,26 @@ export default function RedirectPage() {
             </span>
           </div>
         )}
+        <button
+          onClick={handleCancel}
+          className="btn-secondary"
+          style={{
+            pointerEvents: 'auto',
+            padding: '0.625rem 1.25rem',
+            fontSize: '0.875rem',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+            border: '2px solid rgba(255, 255, 255, 0.2)',
+            borderRadius: 0,
+            cursor: 'pointer',
+            marginTop: '0.5rem',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          Cancel Redirect
+        </button>
       </div>
     </div>
   );

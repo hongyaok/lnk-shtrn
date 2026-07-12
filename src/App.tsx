@@ -9,6 +9,7 @@ import { decodeLinkPayload, decodeNotePayload, decodeMicroPagePayload } from './
 import { Sparkles, HelpCircle } from 'lucide-react';
 import PrivacyModal from './components/PrivacyModal';
 import FeaturesModal from './components/FeaturesModal';
+import WelcomeModal from './components/WelcomeModal';
 import CreateNotePage from './components/CreateNotePage';
 import ViewNotePage from './components/ViewNotePage';
 import CreateTreePage from './components/CreateTreePage';
@@ -20,6 +21,20 @@ function App() {
   const [page, setPage] = useState<Page>('landing');
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
   const [isFeaturesModalOpen, setIsFeaturesModalOpen] = useState(false);
+  const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (page === 'landing') {
+      const lastShown = localStorage.getItem('lnk_shrtn_last_welcome_shown');
+      const now = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in ms
+
+      if (!lastShown || (now - parseInt(lastShown, 10)) > oneDay) {
+        setIsWelcomeModalOpen(true);
+        localStorage.setItem('lnk_shrtn_last_welcome_shown', now.toString());
+      }
+    }
+  }, [page]);
 
   useEffect(() => {
     const handleNavigation = () => {
@@ -207,6 +222,12 @@ function App() {
       <FeaturesModal
         isOpen={isFeaturesModalOpen}
         onClose={() => setIsFeaturesModalOpen(false)}
+      />
+      <WelcomeModal
+        isOpen={isWelcomeModalOpen}
+        onClose={() => {
+          setIsWelcomeModalOpen(false);
+        }}
       />
     </>
   );

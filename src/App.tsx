@@ -5,15 +5,21 @@ import ExpiredPage from './components/ExpiredPage';
 import MyLinksPage from './components/MyLinksPage';
 import AIPage from './components/AIPage';
 import StatusIndicator from './components/StatusIndicator';
-import { decodeLinkPayload } from './utils/urlEncoder';
-import { Bot, HelpCircle } from 'lucide-react';
+import { decodeLinkPayload, decodeNotePayload, decodeMicroPagePayload } from './utils/urlEncoder';
+import { Sparkles, HelpCircle } from 'lucide-react';
 import PrivacyModal from './components/PrivacyModal';
+import FeaturesModal from './components/FeaturesModal';
+import CreateNotePage from './components/CreateNotePage';
+import ViewNotePage from './components/ViewNotePage';
+import CreateTreePage from './components/CreateTreePage';
+import ViewTreePage from './components/ViewTreePage';
 
-type Page = 'landing' | 'redirect' | 'expired' | 'my-links' | 'ai';
+type Page = 'landing' | 'redirect' | 'expired' | 'my-links' | 'ai' | 'create-note' | 'create-tree' | 'view-note' | 'view-tree';
 
 function App() {
   const [page, setPage] = useState<Page>('landing');
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isFeaturesModalOpen, setIsFeaturesModalOpen] = useState(false);
 
   useEffect(() => {
     const handleNavigation = () => {
@@ -27,9 +33,30 @@ function App() {
         return;
       }
 
+      if (path === '/create-note') {
+        setPage('create-note');
+        return;
+      }
+      if (path === '/create-tree') {
+        setPage('create-tree');
+        return;
+      }
+
       const hash = window.location.hash.replace(/^#/, '');
       if (hash.length === 0) {
         setPage('landing');
+        return;
+      }
+
+      const decodedNote = decodeNotePayload(hash);
+      if (decodedNote) {
+        setPage('view-note');
+        return;
+      }
+
+      const decodedTree = decodeMicroPagePayload(hash);
+      if (decodedTree) {
+        setPage('view-tree');
         return;
       }
 
@@ -37,8 +64,11 @@ function App() {
       const decoded = decodeLinkPayload(hash);
       if (decoded && decoded.expiry !== 0 && Date.now() > decoded.expiry) {
         setPage('expired');
-      } else {
+      } else if (decoded) {
         setPage('redirect');
+      } else {
+        // Fallback to landing if totally invalid
+        setPage('landing');
       }
     };
 
@@ -63,6 +93,14 @@ function App() {
         return <MyLinksPage />;
       case 'ai':
         return <AIPage />;
+      case 'create-note':
+        return <CreateNotePage />;
+      case 'create-tree':
+        return <CreateTreePage />;
+      case 'view-note':
+        return <ViewNotePage />;
+      case 'view-tree':
+        return <ViewTreePage />;
       default:
         return <LandingPage />;
     }
@@ -71,12 +109,6 @@ function App() {
   const handleMyLinksClick = (e: React.MouseEvent) => {
     e.preventDefault();
     window.history.pushState({}, '', '/my-links');
-    window.dispatchEvent(new PopStateEvent('popstate'));
-  };
-
-  const handleAiClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    window.history.pushState({}, '', '/ai');
     window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
@@ -125,7 +157,7 @@ function App() {
         gap: '0.75rem',
         alignItems: 'center'
       }}>
-        {(page === 'landing' || page === 'ai' || page === 'my-links') && (
+        {(page === 'landing' || page === 'my-links') && (
           <button
             onClick={() => setIsPrivacyModalOpen(true)}
             className="github-link"
@@ -135,16 +167,14 @@ function App() {
             <HelpCircle size={20} />
           </button>
         )}
-        {page !== 'ai' && (
-          <button
-            onClick={handleAiClick}
-            className="github-link"
-            title="AI Updates"
-            style={{ position: 'static' }}
-          >
-            <Bot size={20} />
-          </button>
-        )}
+        <button
+          onClick={() => setIsFeaturesModalOpen(true)}
+          className="github-link"
+          title="More Features"
+          style={{ position: 'static' }}
+        >
+          <Sparkles size={20} />
+        </button>
         {page !== 'my-links' && (
           <button
             onClick={handleMyLinksClick}
@@ -173,6 +203,10 @@ function App() {
       <PrivacyModal 
         isOpen={isPrivacyModalOpen} 
         onClose={() => setIsPrivacyModalOpen(false)} 
+      />
+      <FeaturesModal
+        isOpen={isFeaturesModalOpen}
+        onClose={() => setIsFeaturesModalOpen(false)}
       />
     </>
   );

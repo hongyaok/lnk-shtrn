@@ -72,28 +72,37 @@ export default function ShareModal({ isOpen, onClose, shortLink }: ShareModalPro
 
         <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600, fontFamily: "'Pixelify Sans', sans-serif" }}>Your Link is Ready</h2>
 
-        <div style={{ position: 'relative', padding: '1rem', background: '#fff', borderRadius: '0' }}>
-          <QRCodeCanvas
-            id="qr-canvas-modal"
-            value={shortLink}
-            size={200}
-          />
-          <button
-            type="button"
-            onClick={downloadQR}
-            style={{
-              position: 'absolute', top: '0.5rem', right: '0.5rem',
-              background: 'rgba(0,0,0,0.6)', border: 'none', color: '#fff',
-              borderRadius: '0', padding: '0.25rem', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              opacity: 0.8, transition: 'opacity 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
-            onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
-            title="Download QR Code"
-          >
-            <Download size={16} />
-          </button>
+        <div style={{ position: 'relative', padding: '1rem', background: '#fff', borderRadius: '0', minWidth: '232px', minHeight: '232px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          {shortLink.length > 2500 ? (
+            <div style={{ color: '#ef4444', textAlign: 'center', fontSize: '0.9rem', padding: '1rem' }}>
+              Link is too long for a QR Code.<br/>
+              Please copy the link directly instead.
+            </div>
+          ) : (
+            <>
+              <QRCodeCanvas
+                id="qr-canvas-modal"
+                value={shortLink}
+                size={200}
+              />
+              <button
+                type="button"
+                onClick={downloadQR}
+                style={{
+                  position: 'absolute', top: '0.5rem', right: '0.5rem',
+                  background: 'rgba(0,0,0,0.6)', border: 'none', color: '#fff',
+                  borderRadius: '0', padding: '0.25rem', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  opacity: 0.8, transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+                onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+                title="Download QR Code"
+              >
+                <Download size={16} />
+              </button>
+            </>
+          )}
         </div>
 
         <div style={{ display: 'flex', gap: '1rem', width: '100%' }}>

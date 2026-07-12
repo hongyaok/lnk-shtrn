@@ -27,6 +27,7 @@
  */
 
 import LZString from 'lz-string';
+import { packMicroPage, unpackMicroPage, type MicroPageData } from './microPageEncoder';
 
 export interface LinkPayload {
   url: string;
@@ -232,6 +233,138 @@ export function encodeLinkPayload(payload: LinkPayload): string {
   return encoded;
 }
 
+export interface NotePayload {
+  iv: Uint8Array;
+  ciphertext: Uint8Array;
+  expiry?: number;
+}
+
+export function encodeNotePayload(iv: Uint8Array, ciphertext: Uint8Array, expiry: number = 0): string {
+  let flags = 0b00110000; // Bit 4 (v3) + Bit 5 (Note)
+  
+  const hasExpiry = expiry > 0;
+  if (hasExpiry) {
+    flags |= 0b0100;
+    flags |= 0b1000; // Keep consistency with v2/v3 expiry flag
+  }
+
+  let buf: Uint8Array;
+  if (hasExpiry) {
+    let expirySecs = Math.ceil((expiry - EPOCH_MS) / MS_PER_SEC);
+    if (expirySecs < 0) expirySecs = 0;
+    if (expirySecs > 0xFFFFFFFF) expirySecs = 0xFFFFFFFF;
+    
+    buf = new Uint8Array(1 + 4 + iv.length + ciphertext.length);
+    buf[0] = flags;
+    buf[1] = (expirySecs >>> 24) & 0xff;
+    buf[2] = (expirySecs >>> 16) & 0xff;
+    buf[3] = (expirySecs >>> 8) & 0xff;
+    buf[4] = expirySecs & 0xff;
+    buf.set(iv, 5);
+    buf.set(ciphertext, 5 + iv.length);
+  } else {
+    buf = new Uint8Array(1 + iv.length + ciphertext.length);
+    buf[0] = flags;
+    buf.set(iv, 1);
+    buf.set(ciphertext, 1 + iv.length);
+  }
+  let encoded = toBase79(buf);
+  let hasNewChar = false;
+  for (let i = 0; i < encoded.length; i++) {
+    if (NEW_CHARS.includes(encoded[i])) {
+      hasNewChar = true;
+      break;
+    }
+  }
+  if (!hasNewChar) encoded += '~';
+  return encoded;
+}
+
+export function decodeNotePayload(encoded: string): NotePayload | null {
+  try {
+    let toDecode = encoded;
+    if (encoded.endsWith('~')) {
+      const rest = encoded.slice(0, -1);
+      let restHasNew = false;
+      for (let i = 0; i < rest.length; i++) {
+        if (NEW_CHARS.includes(rest[i])) {
+          restHasNew = true;
+          break;
+        }
+      }
+      if (!restHasNew) toDecode = rest;
+    }
+    const buf = fromBase79(toDecode);
+    if (buf.length < 1) return null;
+    const flags = buf[0];
+    if ((flags & 0b00110000) !== 0b00110000) return null; // Must have Bit 4 and 5
+    
+    let offset = 1;
+    let expiry = 0;
+    const hasExpiry = (flags & 0b0100) !== 0;
+    if (hasExpiry) {
+      if (buf.length < 5) return null;
+      const expirySecs = ((buf[1] << 24) | (buf[2] << 16) | (buf[3] << 8) | buf[4]) >>> 0;
+      expiry = EPOCH_MS + expirySecs * MS_PER_SEC;
+      offset = 5;
+    }
+
+    if (buf.length < offset + 12) return null; // Needs at least flags/expiry + 12 bytes IV
+    return {
+      iv: buf.subarray(offset, offset + 12),
+      ciphertext: buf.subarray(offset + 12),
+      expiry: expiry > 0 ? expiry : undefined
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function encodeMicroPagePayload(data: MicroPageData): string {
+  const packed = packMicroPage(data);
+  const flags = 0b01010000; // Bit 4 (v3) + Bit 6 (MicroPage)
+  const dataBytes = encodeV3String(packed);
+  const buf = new Uint8Array(1 + dataBytes.length);
+  buf[0] = flags;
+  buf.set(dataBytes, 1);
+  let encoded = toBase79(buf);
+  let hasNewChar = false;
+  for (let i = 0; i < encoded.length; i++) {
+    if (NEW_CHARS.includes(encoded[i])) {
+      hasNewChar = true;
+      break;
+    }
+  }
+  if (!hasNewChar) encoded += '~';
+  return encoded;
+}
+
+export function decodeMicroPagePayload(encoded: string): MicroPageData | null {
+  try {
+    let toDecode = encoded;
+    if (encoded.endsWith('~')) {
+      const rest = encoded.slice(0, -1);
+      let restHasNew = false;
+      for (let i = 0; i < rest.length; i++) {
+        if (NEW_CHARS.includes(rest[i])) {
+          restHasNew = true;
+          break;
+        }
+      }
+      if (!restHasNew) toDecode = rest;
+    }
+    const buf = fromBase79(toDecode);
+    if (buf.length < 1) return null;
+    const flags = buf[0];
+    if ((flags & 0b01010000) !== 0b01010000) return null; // Must have Bit 4 and 6
+    const unpackedStr = decodeV3String(buf, 1);
+    if (!unpackedStr) return null;
+    return unpackMicroPage(unpackedStr);
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Decodes a payload, supporting v3 (Base79), v2/v1 (Base64Url), and v0 (LZ-String).
  */
@@ -274,7 +407,7 @@ function decodeV3BinaryPayload(encoded: string): LinkPayload | null {
 
     const flags = buf[0];
     if ((flags & 0b00010000) === 0) return null; // Must be v3
-    if ((flags & 0b11100000) !== 0) return null; // Reserved
+    if ((flags & 0b11100000) !== 0) return null; // Reserved, so this must be a LinkPayload, not a Note or MicroPage
 
     const hasExpiry = (flags & 0b0100) !== 0;
     let offset = 1;

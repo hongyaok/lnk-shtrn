@@ -172,6 +172,9 @@ export default function MyLinksPage() {
                     const formattedDate = new Date(link.createdAt).toLocaleString();
                     const decoded = decodeLinkPayload(link.id);
                     const destinationUrl = decoded ? decoded.url : link.url || 'Unknown';
+                    const isMicroPage = destinationUrl.startsWith('Micro Page:');
+                    const isBurnNote = destinationUrl.startsWith('Burn Note');
+                    const targetHref = (isMicroPage || isBurnNote) ? link.shortLink : destinationUrl;
 
                     return (
                       <div key={link.id} className="history-item" style={{
@@ -213,7 +216,7 @@ export default function MyLinksPage() {
                               {revealedLinks[link.id] ? <EyeOff size={14} /> : <Eye size={14} />}
                             </button>
                           </div>
-                          <a href={destinationUrl} target="_blank" rel="noopener noreferrer" style={{
+                          <a href={targetHref} target="_blank" rel="noopener noreferrer" style={{
                             color: 'var(--text-main)',
                             fontSize: '0.85rem',
                             wordBreak: 'break-all',
